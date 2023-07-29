@@ -1,15 +1,11 @@
-import JxRequest from '@/services/request';
+import JxRequest from './request/index.ts';
 import { BASE_URL, TIME_OUT } from '@/services/config';
 
-const config = {
+const jxRequest = new JxRequest({
   baseURL: BASE_URL,
   timeout: TIME_OUT,
-};
-
-const jxRequest = new JxRequest({
-  ...config,
   interceptors: {
-    requestSuccessFn: function (config) {
+    requestFulfilledFn: function (config) {
       console.log('实例请求拦截');
       return config;
     },

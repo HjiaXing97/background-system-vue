@@ -1,19 +1,15 @@
 import type { AxiosInstance } from 'axios';
 import axios from 'axios';
-
-import type { JxRequestConfig } from '@/services/types';
+import { JxRequestConfig } from '../types';
 
 class JxRequest {
   instance: AxiosInstance;
-
   constructor(config: JxRequestConfig) {
     this.instance = axios.create(config);
-    /**
-     * 全局拦截器
-     */
+
     this.instance.interceptors.request.use(
       (config) => {
-        console.log('全局请求拦截');
+        console.log('全局拦截');
         return config;
       },
       (error) => {
@@ -22,33 +18,28 @@ class JxRequest {
     );
 
     this.instance.interceptors.response.use(
-      (res) => {
-        return res;
+      (config) => {
+        return config;
       },
       (error) => {
         return error;
       }
     );
 
-    /**
-     * 针对特定实例添加拦截器
-     */
-    if (config.interceptors) {
-      this.instance.interceptors.request.use(
-        config.interceptors.requestSuccessFn,
-        config.interceptors.requestFailureFn
-      );
+    this.instance.interceptors.request.use(
+      config.interceptors?.requestFulfilledFn,
+      config.interceptors?.requestSuccessFn
+    );
 
-      this.instance.interceptors.response.use(
-        config.interceptors.responseSuccessFn,
-        config.interceptors.responseFailureFn
-      );
-    }
+    this.instance.interceptors.response.use(
+      config.interceptors?.responseFulfilledFn,
+      config.interceptors?.responseSuccessFn
+    );
   }
 
   request<T = any>(config: JxRequestConfig<T>) {
-    if (config.interceptors?.requestSuccessFn) {
-      config = config.interceptors.requestSuccessFn(config);
+    if (config.interceptors?.requestFulfilledFn) {
+      config = config.interceptors.requestFulfilledFn(config);
     }
 
     return new Promise<T>((resolve, reject) => {
@@ -56,23 +47,17 @@ class JxRequest {
         .request<any, T>(config)
         .then((res) => {
           if (config.interceptors?.responseSuccessFn) {
-            res = config.interceptors.responseSuccessFn(res);
+            res = config.interceptors?.responseSuccessFn(res);
           }
           resolve(res);
         })
-        .catch((err) => {
-          reject(err);
+        .catch((e) => {
+          reject(e);
         });
     });
   }
-
-  get<T = any>(config: JxRequestConfig<T>) {
-    return this.instance.request({ ...config, method: 'get' });
-  }
-
-  post<T = any>(config: JxRequestConfig<T>) {
-    return this.instance.request({ ...config, method: 'post' });
-  }
+  get() {}
+  post() {}
 }
 
 export default JxRequest;
