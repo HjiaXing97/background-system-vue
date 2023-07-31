@@ -9,7 +9,6 @@ class JxRequest {
 
     this.instance.interceptors.request.use(
       (config) => {
-        console.log('全局拦截');
         return config;
       },
       (error) => {
@@ -18,8 +17,8 @@ class JxRequest {
     );
 
     this.instance.interceptors.response.use(
-      (config) => {
-        return config;
+      (res) => {
+        return res.data;
       },
       (error) => {
         return error;
@@ -56,8 +55,12 @@ class JxRequest {
         });
     });
   }
-  get() {}
-  post() {}
+  get<T = any>(config: JxRequestConfig<T>) {
+    return this.instance.request({ ...config, method: 'get' });
+  }
+  post<T = any>(config: JxRequestConfig<T>) {
+    return this.instance.request({ ...config, method: 'post' });
+  }
 }
 
 export default JxRequest;

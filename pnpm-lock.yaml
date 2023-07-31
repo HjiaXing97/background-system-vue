@@ -5,9 +5,6 @@ settings:
   excludeLinksFromLockfile: false
 
 dependencies:
-  '-':
-    specifier: ^0.0.1
-    version: 0.0.1
   axios:
     specifier: ^1.4.0
     version: 1.4.0
@@ -60,10 +57,6 @@ devDependencies:
     version: 1.8.5(typescript@5.0.2)
 
 packages:
-
-  /-@0.0.1:
-    resolution: {integrity: sha512-3HfneK3DGAm05fpyj20sT3apkNcvPpCuccOThOPdzz8sY7GgQGe0l93XH9bt+YzibcTIgUAIMoyVJI740RtgyQ==}
-    dev: false
 
   /@antfu/utils@0.7.5:
     resolution: {integrity: sha512-dlR6LdS+0SzOAPx/TPRhnoi7hE251OVeT2Snw0RguNbBSbjUHdWr0l3vcUUDg26rEysT89kCbtw1lVorBXLLCg==}

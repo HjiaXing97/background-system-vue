@@ -9,11 +9,11 @@ const route = createRouter({
     },
     {
       path: '/login',
-      component: import('../views/Login/index.vue'),
+      component: () => import('../views/Login/index.vue'),
     },
     {
       path: '/main',
-      component: import('../views/Main/index.vue'),
+      component: () => import('../views/Main/index.vue'),
     },
   ],
 });
